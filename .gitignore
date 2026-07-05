@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Laravel
+Backend/vendor/
+Backend/node_modules/
+Backend/storage/*.key
+Backend/storage/logs/*
+Backend/bootstrap/cache/*.php
+Backend/.env
+Backend/public/storage
+
+# Next.js
+Frontend/node_modules/
+Frontend/.next/
+Frontend/out/
+Frontend/.env
+Frontend/.env.local
+Frontend/.env.production
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+lumina_academy_complete.md
