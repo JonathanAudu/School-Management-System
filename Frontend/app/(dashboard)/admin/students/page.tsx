@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import axios from '@/lib/axios';
 import { Toaster, toast } from 'react-hot-toast';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-export default function StudentsManagement() {
+function StudentsManagementContent() {
     const searchParams = useSearchParams();
     const [students, setStudents] = useState<any[]>([]);
     const [metrics, setMetrics] = useState({ total: 0, active: 0, male: 0, female: 0 });
@@ -650,5 +650,13 @@ export default function StudentsManagement() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function StudentsManagement() {
+    return (
+        <Suspense fallback={<div className="p-6 text-center text-on-surface-variant">Loading...</div>}>
+            <StudentsManagementContent />
+        </Suspense>
     );
 }
