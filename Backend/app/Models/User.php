@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'password', 'role', 'profile_picture', 'signature', 'force_password_reset'])]
@@ -39,4 +41,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(Student::class);
     }
+
+    protected function profilePicture(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? (Str::startsWith($value, ['http://', 'https://']) ? $value : url('storage/' . $value)) : null,
+        );
+    }
+
+    protected function signature(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? (Str::startsWith($value, ['http://', 'https://']) ? $value : url('storage/' . $value)) : null,
+        );
+    }
 }
+

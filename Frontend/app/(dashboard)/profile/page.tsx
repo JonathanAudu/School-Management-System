@@ -25,7 +25,7 @@ export default function ProfileManagement() {
                 setName(user.name);
                 setEmail(user.email);
                 if (user.profile_picture) {
-                    setPreviewUrl(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/storage/${user.profile_picture}`);
+                    setPreviewUrl(user.profile_picture);
                 }
             }
         }

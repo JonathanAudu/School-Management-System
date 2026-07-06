@@ -530,7 +530,7 @@ function StudentsManagementContent() {
                         <div className="flex flex-col items-center text-center">
                             <div className="w-24 h-24 rounded-full overflow-hidden bg-surface-container-highest border-4 border-surface-container-low shadow-lg mb-4 flex items-center justify-center text-3xl font-bold text-on-surface-variant">
                                 {viewStudent.user?.profile_picture ? (
-                                    <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/storage/${viewStudent.user.profile_picture}`} alt={viewStudent.first_name} className="w-full h-full object-cover" />
+                                    <img src={viewStudent.user.profile_picture} alt={viewStudent.first_name} className="w-full h-full object-cover" />
                                 ) : (
                                     <span>{viewStudent.first_name.charAt(0)}</span>
                                 )}
