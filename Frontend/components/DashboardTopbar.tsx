@@ -9,7 +9,7 @@ export default function DashboardTopbar({ onMenuClick }: { onMenuClick?: () => v
 
     if (!user) return null;
 
-    const profilePic = user.profile_picture ? `http://localhost:8000/storage/${user.profile_picture}` : null;
+    const profilePic = user.profile_picture ? `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/storage/${user.profile_picture}` : null;
 
     return (
         <header className="bg-surface-container-low border-b border-outline/20 h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-40">
