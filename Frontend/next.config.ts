@@ -26,6 +26,17 @@ const nextConfig: NextConfig = {
         hostname: "school-management-system-production-1396.up.railway.app",
         pathname: "/storage/**",
       },
+      {
+        protocol: "http",
+        hostname: "school-management-system-production-1396.up.railway.app",
+        pathname: "/storage/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "/storage/**",
+      },
     ],
   },
 };
