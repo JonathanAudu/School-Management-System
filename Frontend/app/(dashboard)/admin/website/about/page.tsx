@@ -5,6 +5,7 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import { getImageUrl } from "@/lib/utils";
 
 export default function AboutUsManagement() {
     const [activeTab, setActiveTab] = useState('history');
@@ -185,7 +186,7 @@ export default function AboutUsManagement() {
                             <div key={leader.id} className="bg-surface-container p-6 rounded-xl border border-outline/10 text-center relative group flex flex-col items-center">
                                 <div className="w-24 h-24 rounded-full bg-surface-container-highest overflow-hidden mb-4 border-4 border-surface">
                                     {leader.photo ? (
-                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${leader.photo}`} alt="" className="w-full h-full object-cover" />
+                                        <img src={getImageUrl(leader.photo)} alt="" className="w-full h-full object-cover" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-on-surface-variant text-2xl font-bold">
                                             {leader.name[0]}

@@ -5,6 +5,7 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import { getImageUrl } from "@/lib/utils";
 
 export default function HomepageManagement() {
     const [activeTab, setActiveTab] = useState('hero');
@@ -199,7 +200,7 @@ export default function HomepageManagement() {
                         {slides.map(slide => (
                             <div key={slide.id} className="flex gap-4 items-center bg-surface-container p-4 rounded-xl border border-outline/10">
                                 <div className="w-32 h-20 bg-surface-container-highest rounded overflow-hidden flex-shrink-0 relative">
-                                    {slide.image && <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/storage/${slide.image}`} alt="" className="w-full h-full object-cover" />}
+                                    {slide.image && <img src={getImageUrl(slide.image)} alt="" className="w-full h-full object-cover" />}
                                     {!slide.is_active && <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-xs text-white font-bold">INACTIVE</div>}
                                 </div>
                                 <div className="flex-1">
@@ -251,7 +252,7 @@ export default function HomepageManagement() {
                         {typeof settings.welcome_image === 'string' && settings.welcome_image && (
                             <div className="mt-4">
                                 <p className="text-sm font-medium text-on-surface-variant mb-2">Current Image:</p>
-                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/storage/${settings.welcome_image}`} alt="Current uploaded image" className="w-48 h-auto object-cover rounded-lg shadow-sm border border-outline/20" />
+                                <img src={getImageUrl(settings.welcome_image)} alt="Current uploaded image" className="w-48 h-auto object-cover rounded-lg shadow-sm border border-outline/20" />
                             </div>
                         )}
                     </div>
@@ -354,7 +355,7 @@ export default function HomepageManagement() {
                                 <label className="block text-sm font-medium text-on-surface mb-1">Slide Image *</label>
                                 {editingSlide && editingSlide.image && (
                                     <div className="mb-2">
-                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/storage/${editingSlide.image}`} className="h-20 object-cover rounded border border-outline/20" alt="Current Image" />
+                                        <img src={getImageUrl(editingSlide.image)} className="h-20 object-cover rounded border border-outline/20" alt="Current Image" />
                                     </div>
                                 )}
                                 <input type="file" accept="image/*" onChange={e => { if(e.target.files) setSlideForm({...slideForm, image: e.target.files[0]}) }} className="w-full px-4 py-2 border border-outline/20 rounded-lg bg-surface-container text-on-surface" required={!editingSlide} />

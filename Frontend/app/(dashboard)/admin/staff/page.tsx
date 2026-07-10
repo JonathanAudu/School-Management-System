@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
+import { getImageUrl } from "@/lib/utils";
 
 export default function StaffPage() {
     const [staffList, setStaffList] = useState<any[]>([]);
@@ -223,7 +224,7 @@ export default function StaffPage() {
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
                                                     {staff.user?.profile_picture ? (
-                                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${staff.user.profile_picture}`} alt="" className="w-full h-full object-cover" />
+                                                        <img src={getImageUrl(staff.user.profile_picture)} alt="" className="w-full h-full object-cover" />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center text-on-surface-variant font-bold">{staff.first_name[0]}{staff.last_name[0]}</div>
                                                     )}
@@ -354,7 +355,7 @@ export default function StaffPage() {
                             <div className="flex gap-4 items-center">
                                 <div className="w-16 h-16 rounded-full bg-surface-container-highest border border-outline/20 overflow-hidden flex-shrink-0 shadow-sm">
                                     {selectedStaff.user?.profile_picture ? (
-                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${selectedStaff.user.profile_picture}`} alt="" className="w-full h-full object-cover" />
+                                        <img src={getImageUrl(selectedStaff.user.profile_picture)} alt="" className="w-full h-full object-cover" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-on-surface-variant font-bold text-xl">{selectedStaff.first_name[0]}{selectedStaff.last_name[0]}</div>
                                     )}

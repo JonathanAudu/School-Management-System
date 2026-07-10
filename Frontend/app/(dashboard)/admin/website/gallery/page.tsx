@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import { getImageUrl } from "@/lib/utils";
 
 export default function GalleryManagement() {
     const [albums, setAlbums] = useState<any[]>([]);
@@ -150,9 +151,9 @@ export default function GalleryManagement() {
                             <div key={album.id} className="bg-surface-container-low border border-outline/20 rounded-2xl overflow-hidden shadow-sm flex flex-col group cursor-pointer" onClick={() => setActiveAlbum(album)}>
                                 <div className="h-48 bg-surface-container-highest relative overflow-hidden">
                                     {album.cover_image ? (
-                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${album.cover_image}`} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <img src={getImageUrl(album.cover_image)} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     ) : album.photos?.length > 0 ? (
-                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${album.photos[0].image}`} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <img src={getImageUrl(album.photos[0].image)} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     ) : (
                                         <div className="w-full h-full flex items-center justify-center text-4xl">📁</div>
                                     )}
@@ -202,7 +203,7 @@ export default function GalleryManagement() {
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                         {activeAlbum.photos?.map((photo: any) => (
                             <div key={photo.id} className="aspect-square bg-surface-container-highest rounded-xl overflow-hidden relative group">
-                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${photo.image}`} alt="" className="w-full h-full object-cover" />
+                                <img src={getImageUrl(photo.image)} alt="" className="w-full h-full object-cover" />
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                     <button onClick={() => handleDeletePhoto(photo.id)} className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transform hover:scale-110 transition-all shadow-lg">🗑️</button>
                                 </div>

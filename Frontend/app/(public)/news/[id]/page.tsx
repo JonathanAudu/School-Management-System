@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getImageUrl } from "@/lib/utils";
 
 async function getNewsArticle(id: string) {
     try {
@@ -51,7 +52,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ id: str
                 <section className="bg-slate-50 -mt-10">
                     <div className="container mx-auto px-6 max-w-5xl">
                         <div className="relative aspect-video rounded-3xl overflow-hidden shadow-xl border-4 border-white">
-                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${article.image}`} alt={article.title} fill className="object-cover" priority />
+                            <Image src={getImageUrl(article.image)} alt={article.title} fill className="object-cover" priority />
                         </div>
                     </div>
                 </section>

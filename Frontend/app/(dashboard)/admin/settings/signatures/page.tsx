@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import { useAuth } from '@/hooks/useAuth';
+import { getImageUrl } from "@/lib/utils";
 
 export default function SignaturesSettingsPage() {
     const { user } = useAuth();
@@ -25,7 +26,7 @@ export default function SignaturesSettingsPage() {
             const res = await axios.get('/api/website/settings', { params: { group: 'signatures' } });
             const settings = res.data.settings;
             if (settings.principal_signature) {
-                setPrincipalSignaturePreview(`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${settings.principal_signature.value}`);
+                setPrincipalSignaturePreview(getImageUrl(settings.principal_signature.value));
             }
         } catch (error) {
             console.error("Failed to load website settings", error);
@@ -36,7 +37,7 @@ export default function SignaturesSettingsPage() {
         try {
             const res = await axios.get('/api/user');
             if (res.data.signature) {
-                setMySignaturePreview(`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${res.data.signature}`);
+                setMySignaturePreview(getImageUrl(res.data.signature));
             }
         } catch (error) {
             console.error("Failed to load user profile", error);

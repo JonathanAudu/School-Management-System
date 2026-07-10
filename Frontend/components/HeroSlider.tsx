@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getImageUrl } from "@/lib/utils";
 
 export default function HeroSlider({ slides }: { slides: any[] }) {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -40,7 +41,7 @@ export default function HeroSlider({ slides }: { slides: any[] }) {
                     }`}
                 >
                     <Image
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'}/storage/${s.image}`}
+                        src={getImageUrl(s.image)}
                         alt={s.title || 'Slide Image'}
                         fill
                         className="object-cover"

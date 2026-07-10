@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
 
 async function getAboutData() {
     try {
@@ -99,7 +100,7 @@ export default async function About() {
                                 <div key={leader.id} className="text-center group">
                                     <div className="relative w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden bg-slate-100 border-4 border-white shadow-lg group-hover:shadow-xl transition-shadow">
                                         {leader.photo ? (
-                                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${leader.photo}`} alt={leader.name} fill className="object-cover" />
+                                            <Image src={getImageUrl(leader.photo)} alt={leader.name} fill className="object-cover" />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center text-5xl font-bold text-slate-300">
                                                 {leader.name.charAt(0)}

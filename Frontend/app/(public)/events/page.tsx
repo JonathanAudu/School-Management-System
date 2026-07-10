@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
 
 async function getEvents() {
     try {
@@ -37,7 +38,7 @@ export default async function EventsList() {
                                 <div key={event.id} className="flex flex-col md:flex-row bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                     <div className="md:w-64 bg-slate-100 relative shrink-0 min-h-[200px]">
                                         {event.image ? (
-                                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${event.image}`} alt={event.title} fill className="object-cover" />
+                                            <Image src={getImageUrl(event.image)} alt={event.title} fill className="object-cover" />
                                         ) : (
                                             <div className="absolute inset-0 flex items-center justify-center text-5xl">📅</div>
                                         )}

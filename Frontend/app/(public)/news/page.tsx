@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { getImageUrl } from "@/lib/utils";
 
 async function getNews() {
     try {
@@ -36,7 +37,7 @@ export default async function NewsList() {
                             <Link href={`/news/${article.id}`} key={article.id} className="card group cursor-pointer block bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
                                 <div className="aspect-[16/9] bg-slate-200 relative overflow-hidden">
                                     {article.image ? (
-                                        <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${article.image}`} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <Image src={getImageUrl(article.image)} alt={article.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                                     ) : (
                                         <div className="absolute inset-0 bg-slate-300 group-hover:scale-105 transition-transform duration-500"></div>
                                     )}

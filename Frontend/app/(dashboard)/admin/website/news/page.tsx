@@ -5,6 +5,7 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import { getImageUrl } from "@/lib/utils";
 
 export default function NewsManagement() {
     const [newsList, setNewsList] = useState<any[]>([]);
@@ -91,7 +92,7 @@ export default function NewsManagement() {
                     <div key={news.id} className="bg-surface-container-low border border-outline/20 rounded-2xl overflow-hidden shadow-sm flex flex-col">
                         <div className="h-48 bg-surface-container-highest relative">
                             {news.image ? (
-                                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${news.image}`} alt="" className="w-full h-full object-cover" />
+                                <img src={getImageUrl(news.image)} alt="" className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-4xl">📰</div>
                             )}
@@ -148,7 +149,7 @@ export default function NewsManagement() {
                                 <label className="block text-sm font-medium text-on-surface mb-1">Featured Image</label>
                                 {editingNews && editingNews.image && (
                                     <div className="mb-2">
-                                        <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${editingNews.image}`} className="h-20 object-cover rounded border border-outline/20" alt="Current Image" />
+                                        <img src={getImageUrl(editingNews.image)} className="h-20 object-cover rounded border border-outline/20" alt="Current Image" />
                                     </div>
                                 )}
                                 <input type="file" accept="image/*" onChange={e => { if(e.target.files) setForm({...form, image: e.target.files[0]}) }} className="w-full px-4 py-2 border border-outline/20 rounded-lg bg-surface-container text-on-surface" />

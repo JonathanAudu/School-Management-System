@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getImageUrl } from "@/lib/utils";
 
 async function getAcademicsData() {
     try {
@@ -47,7 +48,7 @@ export default async function Academics() {
                                     <p className="text-sm text-slate-600">Download the full schedule for the year.</p>
                                 </div>
                             </div>
-                            <a href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${settings.academics_calendar_pdf}`} target="_blank" rel="noreferrer" className="btn-primary">
+                            <a href={getImageUrl(settings.academics_calendar_pdf)} target="_blank" rel="noreferrer" className="btn-primary">
                                 Download PDF
                             </a>
                         </div>

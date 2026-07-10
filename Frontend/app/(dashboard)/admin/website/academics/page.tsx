@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
+import { getImageUrl } from "@/lib/utils";
 
 export default function AcademicsManagement() {
     const [settings, setSettings] = useState<any>({});
@@ -80,7 +81,7 @@ export default function AcademicsManagement() {
                     <label className="block text-sm font-medium text-on-surface mb-2">Academic Calendar (PDF Upload)</label>
                     <input type="file" accept="application/pdf" onChange={e => { if(e.target.files) setSettings({...settings, academics_calendar_pdf: e.target.files[0]}) }} className="w-full px-4 py-2 border border-outline/20 rounded-lg bg-surface-container text-on-surface" />
                     {typeof settings.academics_calendar_pdf === 'string' && settings.academics_calendar_pdf && (
-                        <div className="mt-2 text-sm text-primary">Current calendar uploaded. <a href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/storage/${settings.academics_calendar_pdf}`} target="_blank" rel="noreferrer" className="underline">View PDF</a></div>
+                        <div className="mt-2 text-sm text-primary">Current calendar uploaded. <a href={getImageUrl(settings.academics_calendar_pdf)} target="_blank" rel="noreferrer" className="underline">View PDF</a></div>
                     )}
                 </div>
 
