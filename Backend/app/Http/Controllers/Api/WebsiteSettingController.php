@@ -18,7 +18,13 @@ class WebsiteSettingController extends Controller
             $query->where('group', $request->group);
         }
 
-        $settings = $query->get()->keyBy('key');
+        $settings = $query->get()->keyBy('key')->map(function ($setting) {
+            if ($setting->type === 'image' && $setting->value) {
+                $setting->value = Storage::disk('public')->url($setting->value);
+            }
+            return $setting;
+        });
+
         return response()->json(['settings' => $settings]);
     }
 

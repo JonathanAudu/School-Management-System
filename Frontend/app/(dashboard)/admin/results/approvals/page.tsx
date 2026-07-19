@@ -106,7 +106,7 @@ export default function ResultApprovalsPage() {
 
     const StatusBadge = ({ status }: { status?: string }) => {
         if (!status || status === 'pending') return <span className="px-2 py-1 text-xs font-semibold rounded bg-yellow-500/20 text-yellow-600">Pending</span>;
-        if (status === 'approved') return <span className="px-2 py-1 text-xs font-semibold rounded bg-green-500/20 text-green-600">Approved</span>;
+        if (status === 'approved') return <span className="px-2 py-1 text-xs font-semibold rounded bg-blue-500/20 text-blue-600">Approved</span>;
         if (status === 'rejected') return <span className="px-2 py-1 text-xs font-semibold rounded bg-red-500/20 text-red-600">Rejected</span>;
         return null;
     };
@@ -216,7 +216,7 @@ export default function ResultApprovalsPage() {
                                                 <div className="inline-flex rounded-md shadow-sm" role="group">
                                                     <button
                                                         onClick={() => handleUpdateStatus(cls.id, 'admin', 'approved')}
-                                                        className="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-600 hover:bg-green-500/20 border border-green-500/20 rounded-l-lg transition-colors"
+                                                        className="px-3 py-1.5 text-xs font-medium bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border border-blue-500/20 rounded-l-lg transition-colors"
                                                     >
                                                         Approve
                                                     </button>

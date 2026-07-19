@@ -163,8 +163,8 @@ export default function StudentGradesPage() {
     const getGradeBadgeClass = (grade: string | null) => {
         if (!grade) return 'bg-outline/10 text-on-surface-variant';
         const g = grade.toUpperCase();
-        if (g.startsWith('A')) return 'bg-green-500/10 text-green-600 border border-green-500/20';
-        if (g.startsWith('B')) return 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20';
+        if (g.startsWith('A')) return 'bg-blue-500/10 text-blue-600 border border-blue-500/20';
+        if (g.startsWith('B')) return 'bg-blue-500/10 text-blue-600 border border-blue-500/20';
         if (g.startsWith('C')) return 'bg-blue-500/10 text-blue-600 border border-blue-500/20';
         if (g.startsWith('D')) return 'bg-yellow-500/10 text-yellow-600 border border-yellow-500/20';
         if (g.startsWith('E')) return 'bg-orange-500/10 text-orange-600 border border-orange-500/20';

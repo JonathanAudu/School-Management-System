@@ -150,7 +150,7 @@ export default function StudentSubjectRegistration() {
                                     {status && (
                                         <div className="mt-2">
                                             {status === 'pending' && <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-600">Pending</span>}
-                                            {status === 'approved' && <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-green-500/20 text-green-600">Approved</span>}
+                                            {status === 'approved' && <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-600">Approved</span>}
                                             {status === 'rejected' && <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-500/20 text-red-600">Rejected</span>}
                                         </div>
                                     )}

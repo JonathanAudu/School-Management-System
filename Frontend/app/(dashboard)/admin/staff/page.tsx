@@ -244,7 +244,7 @@ export default function StaffPage() {
                                             <div className="text-xs text-on-surface-variant">{staff.email}</div>
                                         </td>
                                         <td className="p-4">
-                                            <span className={`px-2 py-1 rounded-md text-xs font-medium ${staff.status === 'Active' ? 'bg-green-500/20 text-green-600 dark:text-green-400' : 'bg-red-500/20 text-red-600 dark:text-red-400'}`}>
+                                            <span className={`px-2 py-1 rounded-md text-xs font-medium ${staff.status === 'Active' ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400' : 'bg-red-500/20 text-red-600 dark:text-red-400'}`}>
                                                 {staff.status}
                                             </span>
                                         </td>
@@ -365,7 +365,7 @@ export default function StaffPage() {
                                     <p className="text-on-surface-variant text-sm font-medium">{selectedStaff.position || 'No Designation'} • {selectedStaff.department?.name}</p>
                                     <div className="mt-1 flex gap-2 text-xs">
                                         <span className="px-2 py-0.5 bg-surface-container-highest text-on-surface rounded-md font-mono border border-outline/10">{selectedStaff.staff_id}</span>
-                                        <span className={`px-2 py-0.5 rounded-md font-medium border ${selectedStaff.status === 'Active' ? 'bg-green-500/20 text-green-600 border-green-500/20 dark:text-green-400' : 'bg-red-500/20 text-red-600 border-red-500/20 dark:text-red-400'}`}>{selectedStaff.status}</span>
+                                        <span className={`px-2 py-0.5 rounded-md font-medium border ${selectedStaff.status === 'Active' ? 'bg-blue-500/20 text-blue-600 border-blue-500/20 dark:text-blue-400' : 'bg-red-500/20 text-red-600 border-red-500/20 dark:text-red-400'}`}>{selectedStaff.status}</span>
                                     </div>
                                 </div>
                             </div>
@@ -409,7 +409,7 @@ export default function StaffPage() {
                                                         <div className="font-bold text-primary">{cls.full_name}</div>
                                                         <div className="text-xs text-on-surface-variant mt-1">Room: {cls.room_number || 'N/A'}</div>
                                                     </div>
-                                                    <span className={`text-xs px-2 py-1 rounded-md font-semibold ${cls.is_active ? 'bg-green-500/20 text-green-600 dark:text-green-400' : 'bg-red-500/20 text-red-600 dark:text-red-400'}`}>
+                                                    <span className={`text-xs px-2 py-1 rounded-md font-semibold ${cls.is_active ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400' : 'bg-red-500/20 text-red-600 dark:text-red-400'}`}>
                                                         {cls.is_active ? 'Active' : 'Inactive'}
                                                     </span>
                                                 </div>

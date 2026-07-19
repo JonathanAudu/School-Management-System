@@ -276,12 +276,12 @@ export default function PerformanceOverviewPage() {
                             <div className="absolute right-0 bottom-0 translate-x-3 translate-y-3 opacity-10 text-9xl pointer-events-none">🎓</div>
                             <div className="space-y-2">
                                 <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">Pass Rate</span>
-                                <span className="text-4xl font-black text-green-500 tracking-tight block">
+                                <span className="text-4xl font-black text-blue-500 tracking-tight block">
                                     {performanceData.summary.pass_rate}%
                                 </span>
                                 <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden mt-1.5">
                                     <div 
-                                        className="bg-green-500 h-full rounded-full transition-all duration-500" 
+                                        className="bg-blue-500 h-full rounded-full transition-all duration-500" 
                                         style={{ width: `${performanceData.summary.pass_rate}%` }}
                                     ></div>
                                 </div>
@@ -364,7 +364,7 @@ export default function PerformanceOverviewPage() {
                                 </div>
                                 <div className="py-3 flex justify-between items-center">
                                     <span className="text-sm text-on-surface-variant font-medium">Pass Count</span>
-                                    <span className="text-sm font-bold text-green-500">
+                                    <span className="text-sm font-bold text-blue-500">
                                         {Math.round(performanceData.summary.graded_count * (performanceData.summary.pass_rate / 100))}
                                     </span>
                                 </div>
@@ -436,7 +436,7 @@ export default function PerformanceOverviewPage() {
                                                     <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
                                                         <div 
                                                             className={`h-full rounded-full transition-all duration-300 ${
-                                                                student.average_score >= 70 ? 'bg-green-500' :
+                                                                student.average_score >= 70 ? 'bg-blue-500' :
                                                                 student.average_score >= 50 ? 'bg-primary' :
                                                                 student.average_score >= 45 ? 'bg-yellow-500' : 'bg-red-500'
                                                             }`} 
@@ -490,7 +490,7 @@ export default function PerformanceOverviewPage() {
                                             <td className="px-6 py-4 text-right font-bold text-on-surface">
                                                 {subject.average}%
                                             </td>
-                                            <td className="px-6 py-4 text-right font-semibold text-green-500">
+                                            <td className="px-6 py-4 text-right font-semibold text-blue-500">
                                                 {subject.high}%
                                             </td>
                                             <td className="px-6 py-4 text-right font-semibold text-red-500">
@@ -498,7 +498,7 @@ export default function PerformanceOverviewPage() {
                                             </td>
                                             <td className="px-6 py-4 text-right font-bold">
                                                 <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs ${
-                                                    subject.pass_rate >= 75 ? 'bg-green-500/10 text-green-500' :
+                                                    subject.pass_rate >= 75 ? 'bg-blue-500/10 text-blue-500' :
                                                     subject.pass_rate >= 50 ? 'bg-yellow-500/10 text-yellow-500' :
                                                     'bg-red-500/10 text-red-500'
                                                 }`}>

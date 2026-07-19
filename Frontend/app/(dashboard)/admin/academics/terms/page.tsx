@@ -135,7 +135,7 @@ export default function TermsManagement() {
                                 <td className="p-4">{term.end_date || '-'}</td>
                                 <td className="p-4">
                                     {term.is_current ? (
-                                        <span className="px-2 py-1 text-xs font-bold rounded-full uppercase tracking-wider bg-green-100 text-green-700 border border-green-200">
+                                        <span className="px-2 py-1 text-xs font-bold rounded-full uppercase tracking-wider bg-blue-100 text-blue-700 border border-blue-200">
                                             Current Term
                                         </span>
                                     ) : (

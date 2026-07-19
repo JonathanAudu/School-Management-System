@@ -27,17 +27,20 @@ class PromotionController extends Controller
             ->where('status', 'Active')
             ->get();
 
+        $resultsByStudent = StudentResult::whereIn('student_id', $students->pluck('id'))
+            ->where('academic_session_id', $request->academic_session_id)
+            ->whereNotNull('total_score')
+            ->get()
+            ->groupBy('student_id');
+
         $candidates = [];
 
         foreach ($students as $student) {
-            $results = StudentResult::where([
-                'student_id' => $student->id,
-                'academic_session_id' => $request->academic_session_id,
-            ])->whereNotNull('total_score')->get();
+            $results = $resultsByStudent->get($student->id, collect());
 
             $subCount = $results->count();
             $average = $subCount > 0 ? round($results->avg('total_score'), 1) : 0;
-            
+
             // Standard recommended logic: promote if average is 45% or above
             $recommendation = $average >= 45 ? 'promote' : 'repeat';
 

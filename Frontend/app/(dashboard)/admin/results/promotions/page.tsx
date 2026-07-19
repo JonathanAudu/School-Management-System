@@ -378,7 +378,7 @@ export default function PromotionsPage() {
                             <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider self-center mr-2">Bulk Apply:</span>
                             <button
                                 onClick={() => handleBulkApplyAction('promote')}
-                                className="px-3.5 py-1.5 bg-green-500/10 text-green-600 border border-green-500/20 rounded-lg text-xs font-bold hover:bg-green-500/20 transition-colors"
+                                className="px-3.5 py-1.5 bg-blue-500/10 text-blue-600 border border-blue-500/20 rounded-lg text-xs font-bold hover:bg-blue-500/20 transition-colors"
                             >
                                 Promote Selected
                             </button>
@@ -442,7 +442,7 @@ export default function PromotionsPage() {
                                                 <td className="px-6 py-4 text-center">
                                                     <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold uppercase ${
                                                         cand.recommendation === 'promote' 
-                                                        ? 'bg-green-500/10 text-green-500' 
+                                                        ? 'bg-blue-500/10 text-blue-500' 
                                                         : 'bg-yellow-500/10 text-yellow-600'
                                                     }`}>
                                                         {cand.recommendation === 'promote' ? 'Promote' : 'Repeat'}

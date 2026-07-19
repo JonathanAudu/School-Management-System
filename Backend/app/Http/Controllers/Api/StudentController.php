@@ -174,6 +174,7 @@ class StudentController extends Controller
         $header = array_shift($data);
 
         $inserted = 0;
+        $duplicates = 0;
         DB::beginTransaction();
         try {
             foreach ($data as $row) {
@@ -188,6 +189,11 @@ class StudentController extends Controller
                 $parentPhone = trim($row[6] ?? '');
 
                 if (empty($firstName) || empty($lastName)) continue;
+
+                if ($this->studentAlreadyAdmitted($request->academic_session_id, $request->class, $request->arm, $firstName, $lastName, $middleName, $studentEmail)) {
+                    $duplicates++;
+                    continue;
+                }
 
                 $admissionNumber = $this->generateAdmissionNumber($firstName, $lastName);
                 $userId = null;
@@ -227,7 +233,37 @@ class StudentController extends Controller
             return response()->json(['message' => 'Failed to process file: ' . $e->getMessage()], 500);
         }
 
-        return response()->json(['message' => "Successfully imported {$inserted} students."]);
+        $message = "Successfully imported {$inserted} students.";
+        if ($duplicates > 0) {
+            $message .= " Skipped {$duplicates} " . ($duplicates === 1 ? 'row' : 'rows') . " already on record.";
+        }
+
+        return response()->json([
+            'message' => $message,
+            'inserted' => $inserted,
+            'duplicates' => $duplicates,
+        ]);
+    }
+
+    /**
+     * A student counts as already admitted if the same name is already enrolled in this
+     * class/arm for this session, or the student email is already tied to an existing record -
+     * prevents re-uploading the same CSV from creating duplicate admissions.
+     */
+    private function studentAlreadyAdmitted($academicSessionId, $class, $arm, $firstName, $lastName, $middleName, $studentEmail): bool
+    {
+        if (!empty($studentEmail)) {
+            $emailMatch = Student::whereRaw('LOWER(student_email) = ?', [strtolower($studentEmail)])->exists();
+            if ($emailMatch) return true;
+        }
+
+        return Student::where('academic_session_id', $academicSessionId)
+            ->where('class', $class)
+            ->where('arm', $arm)
+            ->whereRaw('LOWER(first_name) = ?', [strtolower($firstName)])
+            ->whereRaw('LOWER(last_name) = ?', [strtolower($lastName)])
+            ->whereRaw('LOWER(COALESCE(middle_name, \'\')) = ?', [strtolower($middleName)])
+            ->exists();
     }
 
     public function exportCsv(Request $request)

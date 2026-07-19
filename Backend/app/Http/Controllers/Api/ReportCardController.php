@@ -23,6 +23,11 @@ class ReportCardController extends Controller
         ]);
 
         $student = Student::findOrFail($studentId);
+
+        if ($request->user()->role === 'student' && $student->user_id !== $request->user()->id) {
+            return response()->json(['message' => 'You are not authorized to view this report card.'], 403);
+        }
+
         $schoolClass = SchoolClass::findOrFail($request->school_class_id);
         $session = AcademicSession::findOrFail($request->academic_session_id);
         $term = Term::findOrFail($request->term_id);

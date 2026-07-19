@@ -60,9 +60,9 @@ export default function StudentDashboard() {
                                     icon = '⚠️';
                                     actionBgClass = 'bg-yellow-600 text-white hover:bg-yellow-700';
                                 } else if (notif.type === 'success') {
-                                    bgClass = 'bg-green-500/10 border-green-500/20 text-on-surface';
+                                    bgClass = 'bg-blue-500/10 border-blue-500/20 text-on-surface';
                                     icon = '✅';
-                                    actionBgClass = 'bg-green-600 text-white hover:bg-green-700';
+                                    actionBgClass = 'bg-blue-600 text-white hover:bg-blue-700';
                                 } else if (notif.type === 'info') {
                                     bgClass = 'bg-sky-500/10 border-sky-500/20 text-on-surface';
                                     icon = 'ℹ️';

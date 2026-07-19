@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
 
@@ -45,14 +46,14 @@ class User extends Authenticatable
     protected function profilePicture(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value ? (Str::startsWith($value, ['http://', 'https://']) ? $value : url('storage/' . $value)) : null,
+            get: fn ($value) => $value ? (Str::startsWith($value, ['http://', 'https://']) ? $value : Storage::disk('public')->url($value)) : null,
         );
     }
 
     protected function signature(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value ? (Str::startsWith($value, ['http://', 'https://']) ? $value : url('storage/' . $value)) : null,
+            get: fn ($value) => $value ? (Str::startsWith($value, ['http://', 'https://']) ? $value : Storage::disk('public')->url($value)) : null,
         );
     }
 }

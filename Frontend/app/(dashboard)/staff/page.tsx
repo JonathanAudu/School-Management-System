@@ -556,7 +556,7 @@ export default function StaffDashboard() {
                                                 </td>
                                                 <td className="px-6 py-4 text-center">
                                                     <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                                                        student.status === 'Active' ? 'bg-green-500/15 text-green-600' : 'bg-red-500/15 text-red-600'
+                                                        student.status === 'Active' ? 'bg-blue-500/15 text-blue-600' : 'bg-red-500/15 text-red-600'
                                                     }`}>
                                                         {student.status}
                                                     </span>
@@ -564,7 +564,7 @@ export default function StaffDashboard() {
                                                 <td className="px-6 py-4 text-center font-medium">
                                                     <div className="text-on-surface font-semibold text-xs sm:text-sm">{totalSubjects} Subjects</div>
                                                     <div className="text-[10px] text-on-surface-variant mt-0.5 font-semibold">
-                                                        <span className="text-green-600">{approvedSubjects} Approved</span>
+                                                        <span className="text-blue-600">{approvedSubjects} Approved</span>
                                                         {pendingSubjects > 0 && <span className="text-yellow-600 ml-1.5">&bull; {pendingSubjects} Pending</span>}
                                                     </div>
                                                 </td>
@@ -626,7 +626,7 @@ export default function StaffDashboard() {
                                 <h3 className="font-bold text-lg text-on-surface">Mid-Term Results</h3>
                                 <span className={`px-2.5 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
                                     activeClass.approvals.mid_term.form_teacher_status === 'approved'
-                                    ? 'bg-green-500/15 text-green-600'
+                                    ? 'bg-blue-500/15 text-blue-600'
                                     : 'bg-yellow-500/15 text-yellow-600'
                                 }`}>
                                     {activeClass.approvals.mid_term.form_teacher_status === 'approved' ? 'Approved' : 'Pending Sign-off'}
@@ -663,7 +663,7 @@ export default function StaffDashboard() {
                                     <button
                                         onClick={() => handleUpdateResultApproval('mid_term', 'approved')}
                                         disabled={isSavingApproval || activeClass.approvals.mid_term.admin_status !== 'approved'}
-                                        className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
+                                        className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
                                     >
                                         Sign Off & Approve Mid-Term
                                     </button>
@@ -677,7 +677,7 @@ export default function StaffDashboard() {
                                 <h3 className="font-bold text-lg text-on-surface">End of Term Results</h3>
                                 <span className={`px-2.5 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
                                     activeClass.approvals.end_of_term.form_teacher_status === 'approved'
-                                    ? 'bg-green-500/15 text-green-600'
+                                    ? 'bg-blue-500/15 text-blue-600'
                                     : 'bg-yellow-500/15 text-yellow-600'
                                 }`}>
                                     {activeClass.approvals.end_of_term.form_teacher_status === 'approved' ? 'Approved' : 'Pending Sign-off'}
@@ -714,7 +714,7 @@ export default function StaffDashboard() {
                                     <button
                                         onClick={() => handleUpdateResultApproval('end_of_term', 'approved')}
                                         disabled={isSavingApproval || activeClass.approvals.end_of_term.admin_status !== 'approved'}
-                                        className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
+                                        className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors shadow-sm disabled:opacity-50 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed"
                                     >
                                         Sign Off & Approve End of Term
                                     </button>
@@ -859,7 +859,7 @@ export default function StaffDashboard() {
                                                     </div>
                                                     
                                                     {isCompulsory ? (
-                                                        <span className="px-2 py-0.5 bg-green-500/10 text-green-600 border border-green-500/20 text-[10px] font-bold rounded-full uppercase tracking-wider">
+                                                        <span className="px-2 py-0.5 bg-blue-500/10 text-blue-600 border border-blue-500/20 text-[10px] font-bold rounded-full uppercase tracking-wider">
                                                             Compulsory
                                                         </span>
                                                     ) : selectedSubjectIds.includes(cs.subject_id) ? (

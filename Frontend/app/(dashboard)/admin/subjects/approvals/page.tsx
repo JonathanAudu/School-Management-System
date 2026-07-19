@@ -197,7 +197,7 @@ export default function SubjectRegistrationApprovals() {
                                                             <button 
                                                                 disabled={status === 'approved'}
                                                                 onClick={() => handleUpdateStatus(student.id, subject.id, 'approved')}
-                                                                className={`flex-1 py-1.5 rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${status === 'approved' ? 'bg-green-500 text-white' : 'bg-green-500/10 text-green-600 hover:bg-green-500/20'}`}
+                                                                className={`flex-1 py-1.5 rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${status === 'approved' ? 'bg-blue-500 text-white' : 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20'}`}
                                                             >
                                                                 {status === 'approved' ? 'Approved ✓' : 'Approve'}
                                                             </button>

@@ -180,8 +180,8 @@ export default function AdminDashboard() {
                             <div className="w-10 h-10 bg-secondary/10 text-secondary rounded-lg flex items-center justify-center text-xl">👨‍🏫</div>
                             <div className="font-bold text-on-surface">Staff Directory</div>
                         </div>
-                        <div className="p-4 bg-surface-container-low rounded-xl border border-outline/10 shadow-sm hover:border-emerald-500/50 hover:bg-surface-container transition-colors cursor-pointer flex items-center gap-4" onClick={() => router.push('/admin/academics/classes')}>
-                            <div className="w-10 h-10 bg-emerald-500/10 text-emerald-500 rounded-lg flex items-center justify-center text-xl">📚</div>
+                        <div className="p-4 bg-surface-container-low rounded-xl border border-outline/10 shadow-sm hover:border-blue-500/50 hover:bg-surface-container transition-colors cursor-pointer flex items-center gap-4" onClick={() => router.push('/admin/academics/classes')}>
+                            <div className="w-10 h-10 bg-blue-500/10 text-blue-500 rounded-lg flex items-center justify-center text-xl">📚</div>
                             <div className="font-bold text-on-surface">Academics Setup</div>
                         </div>
                     </div>

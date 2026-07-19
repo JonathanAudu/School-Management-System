@@ -287,7 +287,7 @@ function StudentsManagementContent() {
                                     </td>
                                     <td className="py-4 px-6 text-sm text-on-surface-variant">{s.gender || 'N/A'}</td>
                                     <td className="py-4 px-6">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${s.status === 'Active' ? 'bg-green-500/20 text-green-600 dark:text-green-400' : 'bg-red-500/20 text-red-600 dark:text-red-400'}`}>
+                                        <span className={`px-2 py-1 rounded-full text-xs font-bold ${s.status === 'Active' ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400' : 'bg-red-500/20 text-red-600 dark:text-red-400'}`}>
                                             {s.status}
                                         </span>
                                     </td>
@@ -543,7 +543,7 @@ function StudentsManagementContent() {
                                 <div><span className="block text-xs text-on-surface-variant uppercase font-bold">Gender</span><span className="font-semibold text-on-surface">{viewStudent.gender || 'N/A'}</span></div>
                                 <div><span className="block text-xs text-on-surface-variant uppercase font-bold">Session</span><span className="font-semibold text-on-surface">{viewStudent.academic_session?.name}</span></div>
                                 <div><span className="block text-xs text-on-surface-variant uppercase font-bold">Term</span><span className="font-semibold text-on-surface">{viewStudent.term?.name}</span></div>
-                                <div><span className="block text-xs text-on-surface-variant uppercase font-bold">Status</span><span className={`font-semibold ${viewStudent.status === 'Active' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{viewStudent.status}</span></div>
+                                <div><span className="block text-xs text-on-surface-variant uppercase font-bold">Status</span><span className={`font-semibold ${viewStudent.status === 'Active' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>{viewStudent.status}</span></div>
                                 <div><span className="block text-xs text-on-surface-variant uppercase font-bold">Date Admitted</span><span className="font-semibold text-on-surface">{viewStudent.date_admitted}</span></div>
                                 <div className="col-span-2 border-t mt-2 pt-2 border-outline/10"></div>
                                 <div><span className="block text-xs text-on-surface-variant uppercase font-bold">Parent / Guardian</span><span className="font-semibold text-on-surface">{viewStudent.parent_name || 'N/A'}</span></div>

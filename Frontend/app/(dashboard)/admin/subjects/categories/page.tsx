@@ -152,7 +152,7 @@ export default function SubjectCategoriesPage() {
                                     <td className="px-6 py-4 font-medium text-on-surface">{category.name}</td>
                                     <td className="px-6 py-4 text-on-surface-variant">{category.description || '-'}</td>
                                     <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${category.status ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${category.status ? 'bg-blue-500/10 text-blue-500' : 'bg-red-500/10 text-red-500'}`}>
                                             {category.status ? 'Active' : 'Inactive'}
                                         </span>
                                     </td>

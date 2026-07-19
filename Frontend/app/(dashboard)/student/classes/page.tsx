@@ -155,8 +155,8 @@ export default function StudentClassesPage() {
                                 <div className="mt-5 pt-3 border-t border-outline/5 flex justify-between items-center">
                                     <span className="text-[10px] text-on-surface-variant font-medium">Status</span>
                                     {sub.is_registered ? (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-600 border border-green-500/15">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-600 border border-blue-500/15">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                                             Registered
                                         </span>
                                     ) : (

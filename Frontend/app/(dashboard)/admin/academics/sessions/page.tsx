@@ -100,7 +100,7 @@ export default function AcademicSessions() {
                                 <td className="p-4">{session.end_date || '-'}</td>
                                 <td className="p-4">
                                     <span className={`px-2 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
-                                        session.status === 'active' ? 'bg-green-100 text-green-700 border border-green-200' : 
+                                        session.status === 'active' ? 'bg-blue-100 text-blue-700 border border-blue-200' : 
                                         session.status === 'upcoming' ? 'bg-blue-100 text-blue-700 border border-blue-200' :
                                         'bg-gray-100 text-gray-700 border border-gray-200'
                                     }`}>
