@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Staff;
-use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,9 +16,9 @@ class StaffController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Staff::with(['department', 'user', 'classes', 'classSubjects.subject', 'classSubjects.schoolClass', 'classSubjects.academicSession']);
+        $query = Staff::with(['user', 'classes', 'classSubjects.subject', 'classSubjects.schoolClass', 'classSubjects.academicSession']);
 
-        if ($request->department_id) $query->where('department_id', $request->department_id);
+        if ($request->staff_type) $query->where('staff_type', $request->staff_type);
         if ($request->gender) $query->where('gender', $request->gender);
         if ($request->status) $query->where('status', $request->status);
         if ($request->position) $query->where('position', $request->position);
@@ -42,8 +41,7 @@ class StaffController extends Controller
         $male = Staff::where('gender', 'Male')->count();
         $female = Staff::where('gender', 'Female')->count();
         
-        $teachingDept = Department::where('name', 'Teaching')->first();
-        $teaching = $teachingDept ? Staff::where('department_id', $teachingDept->id)->count() : 0;
+        $teaching = Staff::where('staff_type', 'Teaching')->count();
         $nonTeaching = $total - $teaching;
 
         return response()->json([
@@ -62,7 +60,7 @@ class StaffController extends Controller
     public function getLookups()
     {
         return response()->json([
-            'departments' => Department::all(),
+            'staff_types' => ['Teaching', 'Non-Teaching'],
         ]);
     }
 
@@ -114,18 +112,14 @@ class StaffController extends Controller
             'phone' => 'required|string',
             'email' => 'required|email|unique:staff,email|unique:users,email',
             'date_of_birth' => 'required|date',
-            'department_id' => 'required|exists:departments,id',
+            'staff_type' => 'required|in:Teaching,Non-Teaching',
             'position' => 'nullable|string',
         ]);
 
         $validated['staff_id'] = $this->generateStaffId();
         $validated['status'] = 'Active';
 
-        $role = 'staff';
-        $dept = Department::find($validated['department_id']);
-        if ($dept && $dept->name === 'Teaching') {
-            $role = 'teacher';
-        }
+        $role = $validated['staff_type'] === 'Teaching' ? 'teacher' : 'staff';
 
         $user = $this->createUserAndSendOTP("{$validated['first_name']} {$validated['last_name']}", $validated['email'], $role);
         $validated['user_id'] = $user->id;
@@ -147,7 +141,7 @@ class StaffController extends Controller
             'phone' => 'sometimes|string',
             'email' => 'sometimes|email|unique:staff,email,'.$id,
             'date_of_birth' => 'sometimes|date',
-            'department_id' => 'sometimes|exists:departments,id',
+            'staff_type' => 'sometimes|in:Teaching,Non-Teaching',
             'position' => 'nullable|string',
             'status' => 'sometimes|string',
         ]);
@@ -163,9 +157,9 @@ class StaffController extends Controller
 
     public function exportCsv(Request $request)
     {
-        $query = Staff::with(['department', 'user']);
+        $query = Staff::with(['user']);
 
-        if ($request->department_id) $query->where('department_id', $request->department_id);
+        if ($request->staff_type) $query->where('staff_type', $request->staff_type);
         if ($request->gender) $query->where('gender', $request->gender);
         if ($request->status) $query->where('status', $request->status);
         if ($request->position) $query->where('position', $request->position);
@@ -190,7 +184,7 @@ class StaffController extends Controller
             "Expires"             => "0"
         );
 
-        $columns = ['Staff ID', 'First Name', 'Middle Name', 'Last Name', 'Department', 'Position', 'Gender', 'Phone', 'Email', 'Date of Birth', 'Status'];
+        $columns = ['Staff ID', 'First Name', 'Middle Name', 'Last Name', 'Staff Type', 'Position', 'Gender', 'Phone', 'Email', 'Date of Birth', 'Status'];
 
         $callback = function() use($staffList, $columns) {
             $file = fopen('php://output', 'w');
@@ -202,7 +196,7 @@ class StaffController extends Controller
                     $staff->first_name,
                     $staff->middle_name,
                     $staff->last_name,
-                    $staff->department->name ?? '',
+                    $staff->staff_type,
                     $staff->position,
                     $staff->gender,
                     $staff->phone,

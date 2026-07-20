@@ -5,14 +5,17 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import Spinner from '@/components/Spinner';
 import { getImageUrl } from "@/lib/utils";
 
 export default function NewsManagement() {
     const [newsList, setNewsList] = useState<any[]>([]);
-    
+
     const [showModal, setShowModal] = useState(false);
     const [editingNews, setEditingNews] = useState<any>(null);
     const [form, setForm] = useState({ title: '', content: '', category: '', published_at: '', image: null as File | null });
+    const [isSaving, setIsSaving] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [deleteModalConfig, setDeleteModalConfig] = useState<{isOpen: boolean, id: number}>({ isOpen: false, id: 0 });
 
     useEffect(() => {
@@ -30,6 +33,7 @@ export default function NewsManagement() {
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSaving(true);
         const formData = new FormData();
         Object.keys(form).forEach(key => {
             if (key === 'image' && form.image) {
@@ -55,6 +59,8 @@ export default function NewsManagement() {
             fetchNews();
         } catch (err) {
             toast.error('Failed to save news');
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -65,7 +71,8 @@ export default function NewsManagement() {
     const confirmDelete = async () => {
         const { id } = deleteModalConfig;
         if (!id) return;
-        
+
+        setIsDeleting(true);
         try {
             await axios.delete(`/api/website/news/${id}`);
             toast.success('News deleted');
@@ -73,6 +80,7 @@ export default function NewsManagement() {
         } catch (err) {
             toast.error('Failed to delete news');
         } finally {
+            setIsDeleting(false);
             setDeleteModalConfig({ isOpen: false, id: 0 });
         }
     };
@@ -160,7 +168,9 @@ export default function NewsManagement() {
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-outline/20">
                                 <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 bg-surface-container-highest rounded-lg font-medium text-on-surface">Cancel</button>
-                                <button type="submit" className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium">Save News</button>
+                                <button type="submit" disabled={isSaving} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium disabled:opacity-60 flex items-center gap-2">
+                                    {isSaving && <Spinner />}{isSaving ? 'Saving...' : 'Save News'}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -170,9 +180,10 @@ export default function NewsManagement() {
             <DeleteConfirmationModal 
                 isOpen={deleteModalConfig.isOpen} 
                 onClose={() => setDeleteModalConfig({ isOpen: false, id: 0 })} 
-                onConfirm={confirmDelete} 
-                title="Delete News" 
-                message="Are you sure you want to delete this news article?" 
+                onConfirm={confirmDelete}
+                title="Delete News"
+                message="Are you sure you want to delete this news article?"
+                isDeleting={isDeleting}
             />
         </div>
     );

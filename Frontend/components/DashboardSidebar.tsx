@@ -34,7 +34,7 @@ export default function DashboardSidebar({ isOpen = false, onClose }: { isOpen?:
         { name: 'My Grades', href: '/student/grades', icon: 'A+', roles: ['student'] },
         { name: 'Subject Registration', href: '/student/subjects', icon: '📝', roles: ['student'] },
         { name: 'My Children', href: '/parent/children', icon: '👨‍👩‍👧‍👦', roles: ['parent'] },
-        { name: 'Settings', href: '/settings', icon: '⚙️', roles: ['admin'] },
+        { name: 'Settings', href: '/admin/settings', icon: '⚙️', roles: ['admin'] },
         { name: 'Signatures', href: '/admin/settings/signatures', icon: '✍️', roles: ['admin', 'staff'] },
         { name: 'Profile', href: '/profile', icon: '👤', roles: ['admin', 'staff', 'student', 'parent'] },
     ];

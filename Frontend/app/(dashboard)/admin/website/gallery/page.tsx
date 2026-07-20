@@ -4,23 +4,26 @@ import { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import Spinner from '@/components/Spinner';
 import { getImageUrl } from "@/lib/utils";
 
 export default function GalleryManagement() {
     const [albums, setAlbums] = useState<any[]>([]);
-    
+
     // Album Modal
     const [showAlbumModal, setShowAlbumModal] = useState(false);
     const [editingAlbum, setEditingAlbum] = useState<any>(null);
     const [albumForm, setAlbumForm] = useState({ name: '', description: '', cover_image: null as File | null });
+    const [isSavingAlbum, setIsSavingAlbum] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     // Photos View
     const [activeAlbum, setActiveAlbum] = useState<any>(null);
     const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
 
     // Delete Modal State
-    const [deleteModalConfig, setDeleteModalConfig] = useState<{isOpen: boolean, id: number, type: 'album' | 'photo', title: string, message: string}>({ 
-        isOpen: false, id: 0, type: 'album', title: '', message: '' 
+    const [deleteModalConfig, setDeleteModalConfig] = useState<{isOpen: boolean, id: number, type: 'album' | 'photo', title: string, message: string}>({
+        isOpen: false, id: 0, type: 'album', title: '', message: ''
     });
 
     useEffect(() => {
@@ -43,6 +46,7 @@ export default function GalleryManagement() {
 
     const handleSaveAlbum = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSavingAlbum(true);
         const formData = new FormData();
         Object.keys(albumForm).forEach(key => {
             if (key === 'cover_image' && albumForm.cover_image) {
@@ -68,6 +72,8 @@ export default function GalleryManagement() {
             fetchAlbums();
         } catch (err) {
             toast.error('Failed to save album');
+        } finally {
+            setIsSavingAlbum(false);
         }
     };
 
@@ -117,6 +123,7 @@ export default function GalleryManagement() {
         const { id, type } = deleteModalConfig;
         if (!id) return;
 
+        setIsDeleting(true);
         try {
             if (type === 'album') {
                 await axios.delete(`/api/website/albums/${id}`);
@@ -130,6 +137,7 @@ export default function GalleryManagement() {
         } catch (err) {
             toast.error(`Failed to delete ${type}`);
         } finally {
+            setIsDeleting(false);
             setDeleteModalConfig(prev => ({ ...prev, isOpen: false }));
         }
     };
@@ -193,8 +201,8 @@ export default function GalleryManagement() {
                             </div>
                             <div className="relative">
                                 <input type="file" multiple accept="image/*" onChange={handlePhotoUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" disabled={isUploadingPhoto} />
-                                <button disabled={isUploadingPhoto} className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium pointer-events-none">
-                                    {isUploadingPhoto ? 'Uploading...' : 'Upload Photos'}
+                                <button disabled={isUploadingPhoto} className="px-4 py-2 bg-primary text-on-primary rounded-lg text-sm font-medium pointer-events-none flex items-center gap-2">
+                                    {isUploadingPhoto && <Spinner />}{isUploadingPhoto ? 'Uploading...' : 'Upload Photos'}
                                 </button>
                             </div>
                         </div>
@@ -237,7 +245,9 @@ export default function GalleryManagement() {
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-outline/20">
                                 <button type="button" onClick={() => setShowAlbumModal(false)} className="px-4 py-2 bg-surface-container-highest rounded-lg font-medium text-on-surface">Cancel</button>
-                                <button type="submit" className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium">Save Album</button>
+                                <button type="submit" disabled={isSavingAlbum} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium disabled:opacity-60 flex items-center gap-2">
+                                    {isSavingAlbum && <Spinner />}{isSavingAlbum ? 'Saving...' : 'Save Album'}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -247,9 +257,10 @@ export default function GalleryManagement() {
             <DeleteConfirmationModal 
                 isOpen={deleteModalConfig.isOpen} 
                 onClose={() => setDeleteModalConfig(prev => ({ ...prev, isOpen: false }))} 
-                onConfirm={confirmDelete} 
-                title={deleteModalConfig.title} 
-                message={deleteModalConfig.message} 
+                onConfirm={confirmDelete}
+                title={deleteModalConfig.title}
+                message={deleteModalConfig.message}
+                isDeleting={isDeleting}
             />
         </div>
     );

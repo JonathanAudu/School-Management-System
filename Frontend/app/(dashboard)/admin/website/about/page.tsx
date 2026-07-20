@@ -5,6 +5,7 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import Spinner from '@/components/Spinner';
 import { getImageUrl } from "@/lib/utils";
 
 export default function AboutUsManagement() {
@@ -13,6 +14,8 @@ export default function AboutUsManagement() {
     const [leaders, setLeaders] = useState<any[]>([]);
 
     const [isSaving, setIsSaving] = useState(false);
+    const [isSavingLeader, setIsSavingLeader] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [deleteModalConfig, setDeleteModalConfig] = useState<{isOpen: boolean, id: number}>({ isOpen: false, id: 0 });
 
     useEffect(() => {
@@ -71,6 +74,7 @@ export default function AboutUsManagement() {
 
     const handleSaveLeader = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSavingLeader(true);
         const formData = new FormData();
         Object.keys(leaderForm).forEach(key => {
             if (key === 'photo' && leaderForm.photo) {
@@ -96,6 +100,8 @@ export default function AboutUsManagement() {
             fetchData();
         } catch (err) {
             toast.error('Failed to save leader');
+        } finally {
+            setIsSavingLeader(false);
         }
     };
 
@@ -106,7 +112,8 @@ export default function AboutUsManagement() {
     const confirmDelete = async () => {
         const { id } = deleteModalConfig;
         if (!id) return;
-        
+
+        setIsDeleting(true);
         try {
             await axios.delete(`/api/website/leadership-members/${id}`);
             toast.success('Leader deleted');
@@ -114,6 +121,7 @@ export default function AboutUsManagement() {
         } catch (err) {
             toast.error('Failed to delete leader');
         } finally {
+            setIsDeleting(false);
             setDeleteModalConfig({ isOpen: false, id: 0 });
         }
     };
@@ -251,7 +259,9 @@ export default function AboutUsManagement() {
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-outline/20">
                                 <button type="button" onClick={() => setShowLeaderModal(false)} className="px-4 py-2 bg-surface-container-highest rounded-lg font-medium text-on-surface">Cancel</button>
-                                <button type="submit" className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium">Save Leader</button>
+                                <button type="submit" disabled={isSavingLeader} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium disabled:opacity-60 flex items-center gap-2">
+                                    {isSavingLeader && <Spinner />}{isSavingLeader ? 'Saving...' : 'Save Leader'}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -261,9 +271,10 @@ export default function AboutUsManagement() {
             <DeleteConfirmationModal 
                 isOpen={deleteModalConfig.isOpen} 
                 onClose={() => setDeleteModalConfig({ isOpen: false, id: 0 })} 
-                onConfirm={confirmDelete} 
-                title="Delete Leader" 
-                message="Are you sure you want to delete this leadership member?" 
+                onConfirm={confirmDelete}
+                title="Delete Leader"
+                message="Are you sure you want to delete this leadership member?"
+                isDeleting={isDeleting}
             />
         </div>
     );

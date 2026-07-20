@@ -5,7 +5,12 @@ import Link from 'next/link';
 import PublicNavLinks from './PublicNavLinks';
 import ClientAuthLinks from './ClientAuthLinks';
 
-export default function PublicHeader() {
+interface PublicHeaderProps {
+    schoolName?: string;
+    schoolLogo?: string;
+}
+
+export default function PublicHeader({ schoolName, schoolLogo }: PublicHeaderProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
@@ -13,10 +18,13 @@ export default function PublicHeader() {
         <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all">
             <div className="container mx-auto px-6 py-4 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-3 group z-50">
-                    <span className="text-3xl transition-transform group-hover:scale-110">🏛️</span>
+                    {schoolLogo ? (
+                        <img src={schoolLogo} alt={schoolName || 'School logo'} className="h-9 w-auto object-contain transition-transform group-hover:scale-110" />
+                    ) : (
+                        <span className="text-3xl transition-transform group-hover:scale-110">🏛️</span>
+                    )}
                     <div>
-                        <span className="block font-serif font-bold text-xl leading-tight text-slate-900">St. Augustine</span>
-                        <span className="block text-xs uppercase tracking-widest text-sky-600 font-semibold">Academy</span>
+                        <span className="block font-serif font-bold text-xl leading-tight text-slate-900">{schoolName || 'St. Augustine Academy'}</span>
                     </div>
                 </Link>
 

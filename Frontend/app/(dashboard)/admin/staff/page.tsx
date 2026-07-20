@@ -3,18 +3,20 @@
 import { useState, useEffect } from 'react';
 import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
+import Spinner from '@/components/Spinner';
 import { getImageUrl } from "@/lib/utils";
+
+const STAFF_TYPES = ['Teaching', 'Non-Teaching'];
 
 export default function StaffPage() {
     const [staffList, setStaffList] = useState<any[]>([]);
     const [metrics, setMetrics] = useState({ total: 0, active: 0, teaching: 0, non_teaching: 0, male: 0, female: 0 });
-    const [departments, setDepartments] = useState<any[]>([]);
-    
+
     // Filters & Pagination
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState('');
-    const [filterDept, setFilterDept] = useState('');
+    const [filterType, setFilterType] = useState('');
     const [filterGender, setFilterGender] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
 
@@ -33,28 +35,15 @@ export default function StaffPage() {
         phone: '',
         email: '',
         date_of_birth: '',
-        department_id: '',
+        staff_type: 'Teaching',
         position: ''
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        fetchLookups();
         fetchStaff();
-    }, [page, filterDept, filterGender, filterStatus]);
-
-    const fetchLookups = async () => {
-        try {
-            const res = await axios.get('/api/staff/lookups');
-            setDepartments(res.data.departments);
-            if (res.data.departments.length > 0) {
-                setAddForm(prev => ({ ...prev, department_id: res.data.departments[0].id }));
-            }
-        } catch (err) {
-            console.error('Failed to fetch lookups');
-        }
-    };
+    }, [page, filterType, filterGender, filterStatus]);
 
     const fetchStaff = async (searchQuery = search) => {
         try {
@@ -62,7 +51,7 @@ export default function StaffPage() {
                 params: {
                     page,
                     search: searchQuery,
-                    department_id: filterDept,
+                    staff_type: filterType,
                     gender: filterGender,
                     status: filterStatus
                 }
@@ -101,7 +90,7 @@ export default function StaffPage() {
         try {
             const res = await axios.get('/api/staff/export', {
                 params: {
-                    department_id: filterDept,
+                    staff_type: filterType,
                     gender: filterGender,
                     status: filterStatus,
                     search: search,
@@ -182,9 +171,9 @@ export default function StaffPage() {
                     />
                 </form>
                 <div className="flex gap-2 w-full md:w-auto overflow-x-auto">
-                    <select className="border border-outline/20 bg-surface-container-low rounded-lg px-3 py-2 text-sm text-on-surface" value={filterDept} onChange={e => {setFilterDept(e.target.value); setPage(1)}}>
-                        <option value="">All Departments</option>
-                        {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                    <select className="border border-outline/20 bg-surface-container-low rounded-lg px-3 py-2 text-sm text-on-surface" value={filterType} onChange={e => {setFilterType(e.target.value); setPage(1)}}>
+                        <option value="">All Staff Types</option>
+                        {STAFF_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                     </select>
                     <select className="border border-outline/20 bg-surface-container-low rounded-lg px-3 py-2 text-sm text-on-surface" value={filterGender} onChange={e => {setFilterGender(e.target.value); setPage(1)}}>
                         <option value="">All Genders</option>
@@ -207,7 +196,7 @@ export default function StaffPage() {
                             <tr className="bg-surface-container border-b border-outline/20 text-xs uppercase tracking-wider text-on-surface-variant">
                                 <th className="p-4 font-semibold">Staff ID</th>
                                 <th className="p-4 font-semibold">Staff Member</th>
-                                <th className="p-4 font-semibold">Department & Role</th>
+                                <th className="p-4 font-semibold">Type & Role</th>
                                 <th className="p-4 font-semibold">Contact</th>
                                 <th className="p-4 font-semibold">Status</th>
                                 <th className="p-4 font-semibold">Actions</th>
@@ -236,7 +225,7 @@ export default function StaffPage() {
                                             </div>
                                         </td>
                                         <td className="p-4">
-                                            <div className="font-medium text-on-surface">{staff.department?.name || 'Unassigned'}</div>
+                                            <div className="font-medium text-on-surface">{staff.staff_type}</div>
                                             <div className="text-xs text-on-surface-variant">{staff.position || '-'}</div>
                                         </td>
                                         <td className="p-4">
@@ -320,9 +309,9 @@ export default function StaffPage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-outline/10 pt-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-on-surface-variant mb-1">Department *</label>
-                                    <select required className="w-full px-4 py-2 bg-surface-container-highest border border-outline/20 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface appearance-none" value={addForm.department_id} onChange={e => setAddForm({...addForm, department_id: e.target.value})}>
-                                        {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                                    <label className="block text-sm font-medium text-on-surface-variant mb-1">Staff Type *</label>
+                                    <select required className="w-full px-4 py-2 bg-surface-container-highest border border-outline/20 rounded-xl text-sm focus:outline-none focus:border-primary text-on-surface appearance-none" value={addForm.staff_type} onChange={e => setAddForm({...addForm, staff_type: e.target.value})}>
+                                        {STAFF_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                                     </select>
                                 </div>
                                 <div>
@@ -338,8 +327,8 @@ export default function StaffPage() {
 
                             <div className="flex justify-end gap-3 pt-4 border-t border-outline/10">
                                 <button type="button" onClick={() => setShowAddModal(false)} className="px-4 py-2 border border-outline/20 text-on-surface-variant rounded-xl font-medium hover:bg-surface-container-highest transition-colors">Cancel</button>
-                                <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-primary text-on-primary rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:opacity-70">
-                                    {isSubmitting ? 'Creating...' : 'Create Staff Member'}
+                                <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-primary text-on-primary rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:opacity-70 flex items-center gap-2">
+                                    {isSubmitting && <Spinner />}{isSubmitting ? 'Creating...' : 'Create Staff Member'}
                                 </button>
                             </div>
                         </form>
@@ -362,7 +351,7 @@ export default function StaffPage() {
                                 </div>
                                 <div>
                                     <h2 className="text-2xl font-bold text-on-surface">{selectedStaff.first_name} {selectedStaff.middle_name} {selectedStaff.last_name}</h2>
-                                    <p className="text-on-surface-variant text-sm font-medium">{selectedStaff.position || 'No Designation'} • {selectedStaff.department?.name}</p>
+                                    <p className="text-on-surface-variant text-sm font-medium">{selectedStaff.position || 'No Designation'} • {selectedStaff.staff_type}</p>
                                     <div className="mt-1 flex gap-2 text-xs">
                                         <span className="px-2 py-0.5 bg-surface-container-highest text-on-surface rounded-md font-mono border border-outline/10">{selectedStaff.staff_id}</span>
                                         <span className={`px-2 py-0.5 rounded-md font-medium border ${selectedStaff.status === 'Active' ? 'bg-blue-500/20 text-blue-600 border-blue-500/20 dark:text-blue-400' : 'bg-red-500/20 text-red-600 border-red-500/20 dark:text-red-400'}`}>{selectedStaff.status}</span>

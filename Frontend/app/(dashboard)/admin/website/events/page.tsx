@@ -5,14 +5,17 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import Spinner from '@/components/Spinner';
 import { getImageUrl } from "@/lib/utils";
 
 export default function EventsManagement() {
     const [eventsList, setEventsList] = useState<any[]>([]);
-    
+
     const [showModal, setShowModal] = useState(false);
     const [editingEvent, setEditingEvent] = useState<any>(null);
     const [form, setForm] = useState({ title: '', description: '', date: '', time: '', venue: '', image: null as File | null });
+    const [isSaving, setIsSaving] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [deleteModalConfig, setDeleteModalConfig] = useState<{isOpen: boolean, id: number}>({ isOpen: false, id: 0 });
 
     useEffect(() => {
@@ -30,6 +33,7 @@ export default function EventsManagement() {
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSaving(true);
         const formData = new FormData();
         Object.keys(form).forEach(key => {
             if (key === 'image' && form.image) {
@@ -55,6 +59,8 @@ export default function EventsManagement() {
             fetchEvents();
         } catch (err) {
             toast.error('Failed to save event');
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -65,7 +71,8 @@ export default function EventsManagement() {
     const confirmDelete = async () => {
         const { id } = deleteModalConfig;
         if (!id) return;
-        
+
+        setIsDeleting(true);
         try {
             await axios.delete(`/api/website/events/${id}`);
             toast.success('Event deleted');
@@ -73,6 +80,7 @@ export default function EventsManagement() {
         } catch (err) {
             toast.error('Failed to delete event');
         } finally {
+            setIsDeleting(false);
             setDeleteModalConfig({ isOpen: false, id: 0 });
         }
     };
@@ -169,7 +177,9 @@ export default function EventsManagement() {
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-outline/20">
                                 <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 bg-surface-container-highest rounded-lg font-medium text-on-surface">Cancel</button>
-                                <button type="submit" className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium">Save Event</button>
+                                <button type="submit" disabled={isSaving} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium disabled:opacity-60 flex items-center gap-2">
+                                    {isSaving && <Spinner />}{isSaving ? 'Saving...' : 'Save Event'}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -179,9 +189,10 @@ export default function EventsManagement() {
             <DeleteConfirmationModal 
                 isOpen={deleteModalConfig.isOpen} 
                 onClose={() => setDeleteModalConfig({ isOpen: false, id: 0 })} 
-                onConfirm={confirmDelete} 
-                title="Delete Event" 
-                message="Are you sure you want to delete this event?" 
+                onConfirm={confirmDelete}
+                title="Delete Event"
+                message="Are you sure you want to delete this event?"
+                isDeleting={isDeleting}
             />
         </div>
     );

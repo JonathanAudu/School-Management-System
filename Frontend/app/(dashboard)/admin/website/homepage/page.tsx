@@ -5,6 +5,7 @@ import axios from '@/lib/axios';
 import toast from 'react-hot-toast';
 import TiptapEditor from '@/components/TiptapEditor';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import Spinner from '@/components/Spinner';
 import { getImageUrl } from "@/lib/utils";
 
 export default function HomepageManagement() {
@@ -15,6 +16,9 @@ export default function HomepageManagement() {
 
     // Form states
     const [isSaving, setIsSaving] = useState(false);
+    const [isSavingSlide, setIsSavingSlide] = useState(false);
+    const [isSavingStat, setIsSavingStat] = useState(false);
+    const [isDeletingItem, setIsDeletingItem] = useState(false);
     const [deleteModalConfig, setDeleteModalConfig] = useState<{isOpen: boolean, id: number, type: string, title?: string, message?: string}>({ isOpen: false, id: 0, type: '' });
 
     useEffect(() => {
@@ -77,6 +81,7 @@ export default function HomepageManagement() {
 
     const handleSaveSlide = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSavingSlide(true);
         const formData = new FormData();
         Object.keys(slideForm).forEach(key => {
             if (key === 'image' && slideForm.image) {
@@ -104,6 +109,8 @@ export default function HomepageManagement() {
             fetchData();
         } catch (err) {
             toast.error('Failed to save slide');
+        } finally {
+            setIsSavingSlide(false);
         }
     };
 
@@ -124,6 +131,7 @@ export default function HomepageManagement() {
 
     const handleSaveStat = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSavingStat(true);
         try {
             if (editingStat) {
                 await axios.put(`/api/website/quick-stats/${editingStat.id}`, statForm);
@@ -136,6 +144,8 @@ export default function HomepageManagement() {
             fetchData();
         } catch (err) {
             toast.error('Failed to save stat');
+        } finally {
+            setIsSavingStat(false);
         }
     };
 
@@ -152,7 +162,8 @@ export default function HomepageManagement() {
     const confirmDelete = async () => {
         const { id, type } = deleteModalConfig;
         if (!id) return;
-        
+
+        setIsDeletingItem(true);
         try {
             if (type === 'slide') {
                 await axios.delete(`/api/website/hero-slides/${id}`);
@@ -165,6 +176,7 @@ export default function HomepageManagement() {
         } catch (err) {
             toast.error(`Failed to delete ${type}`);
         } finally {
+            setIsDeletingItem(false);
             setDeleteModalConfig({ ...deleteModalConfig, isOpen: false });
         }
     };
@@ -392,7 +404,9 @@ export default function HomepageManagement() {
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-outline/20">
                                 <button type="button" onClick={() => setShowSlideModal(false)} className="px-4 py-2 bg-surface-container-highest rounded-lg font-medium text-on-surface">Cancel</button>
-                                <button type="submit" className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium">Save Slide</button>
+                                <button type="submit" disabled={isSavingSlide} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium disabled:opacity-60 flex items-center gap-2">
+                                    {isSavingSlide && <Spinner />}{isSavingSlide ? 'Saving...' : 'Save Slide'}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -449,7 +463,9 @@ export default function HomepageManagement() {
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-outline/20">
                                 <button type="button" onClick={() => setShowStatModal(false)} className="px-4 py-2 bg-surface-container-highest rounded-lg font-medium text-on-surface">Cancel</button>
-                                <button type="submit" className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium">Save Stat</button>
+                                <button type="submit" disabled={isSavingStat} className="px-4 py-2 bg-primary text-on-primary rounded-lg font-medium disabled:opacity-60 flex items-center gap-2">
+                                    {isSavingStat && <Spinner />}{isSavingStat ? 'Saving...' : 'Save Stat'}
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -459,9 +475,10 @@ export default function HomepageManagement() {
             <DeleteConfirmationModal 
                 isOpen={deleteModalConfig.isOpen} 
                 onClose={() => setDeleteModalConfig({ ...deleteModalConfig, isOpen: false })} 
-                onConfirm={confirmDelete} 
-                title={deleteModalConfig.title} 
-                message={deleteModalConfig.message} 
+                onConfirm={confirmDelete}
+                title={deleteModalConfig.title}
+                message={deleteModalConfig.message}
+                isDeleting={isDeletingItem}
             />
         </div>
     );

@@ -79,8 +79,8 @@ export default function StaffPageManagement() {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-on-surface mb-2">Departments to Include</label>
-                    <p className="text-sm text-on-surface-variant mb-3">By default, all active staff from all departments are shown. To hide specific departments (like Janitorial or Maintenance), you can manage that in the Staff Module.</p>
+                    <label className="block text-sm font-medium text-on-surface mb-2">Who's Shown</label>
+                    <p className="text-sm text-on-surface-variant mb-3">All active staff members are shown on the public Faculty & Staff page, teaching and non-teaching alike.</p>
                 </div>
 
                 <div className="flex justify-end">

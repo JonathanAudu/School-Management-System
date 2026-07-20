@@ -1,14 +1,37 @@
 import Link from "next/link";
 import PublicHeader from "@/components/PublicHeader";
+import { getImageUrl } from "@/lib/utils";
 
-export default function PublicLayout({
+async function getGeneralSettings() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+    const res = await fetch(`${baseUrl}/api/website/settings?group=general`, { next: { revalidate: 60 } });
+    const data = await res.json();
+    const settings: any = {};
+    if (data.settings) {
+      Object.values(data.settings).forEach((s: any) => {
+        settings[s.key] = s.value;
+      });
+    }
+    return settings;
+  } catch (e) {
+    console.error("Failed to fetch general settings", e);
+    return {};
+  }
+}
+
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const settings = await getGeneralSettings();
+  const schoolName: string | undefined = settings.school_name || undefined;
+  const schoolLogo: string | undefined = settings.school_logo ? getImageUrl(settings.school_logo) : undefined;
+
   return (
     <>
-      <PublicHeader />
+      <PublicHeader schoolName={schoolName} schoolLogo={schoolLogo} />
 
       {/* Main Content */}
       <main className="flex-grow pt-20">
@@ -20,10 +43,13 @@ export default function PublicLayout({
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-6">
-              <span className="text-3xl">🏛️</span>
+              {schoolLogo ? (
+                <img src={schoolLogo} alt={schoolName || 'School logo'} className="h-9 w-auto object-contain" />
+              ) : (
+                <span className="text-3xl">🏛️</span>
+              )}
               <div>
-                <span className="block font-serif font-bold text-xl leading-tight text-white">St. Augustine</span>
-                <span className="block text-xs uppercase tracking-widest text-sky-400 font-semibold">Academy</span>
+                <span className="block font-serif font-bold text-xl leading-tight text-white">{schoolName || 'St. Augustine Academy'}</span>
               </div>
             </Link>
             <p className="text-slate-400 max-w-sm">
@@ -53,7 +79,7 @@ export default function PublicLayout({
         </div>
         
         <div className="container mx-auto px-6 mt-16 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
-          <p>&copy; {new Date().getFullYear()} St. Augustine Academy. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {schoolName || 'St. Augustine Academy'}. All rights reserved.</p>
         </div>
       </footer>
     </>
